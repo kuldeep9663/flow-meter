@@ -1,0 +1,143 @@
+<style>
+:root {
+    --sidebar-width: 250px;
+    --sidebar-collapsed: 72px;
+    --dark: #020617;
+    --main: #0f172a;
+    --accent: #38bdf8;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--sidebar-width);
+    background: var(--dark);
+    padding: 20px 14px;
+    box-shadow: 2px 0 20px rgba(0,0,0,.6);
+    transition: width .3s ease, transform .3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Desktop collapse */
+#sidebar.collapsed {
+    width: var(--sidebar-collapsed);
+}
+
+/* Mobile hide */
+#sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+/* ===== BRAND ===== */
+.brand {
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#sidebar.collapsed .brand {
+    display: none;
+}
+
+/* ===== MENU ===== */
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #e5e7eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.menu a:hover {
+    background: #1e293b;
+    color: var(--accent);
+}
+
+.icon {
+    width: 22px;
+    text-align: center;
+}
+
+/* Hide text on collapse */
+#sidebar.collapsed span {
+    display: none;
+}
+
+/* ===== OVERLAY ===== */
+#sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 999;
+    display: none;
+}
+
+/* ===== BODY SHIFT ===== */
+body {
+    margin-left: var(--sidebar-width);
+    transition: margin-left .3s ease;
+}
+
+body.sidebar-collapsed {
+    margin-left: var(--sidebar-collapsed);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+    body {
+        margin-left: 0;
+    }
+}
+</style>
+
+<div id="sidebar-overlay"></div>
+
+<div id="sidebar">
+    <div class="brand">📡 NB-IoT</div>
+    <nav class="menu">
+        <a href="/"><div class="icon">🏠</div><span>Dashboard</span></a>
+        <a href="/report"><div class="icon">📊</div><span>Report</span></a>
+        <a href="/sites"><div class="icon">🏭</div><span>Sites</span></a>
+        <a href="/logout"><div class="icon">🚪</div><span>Logout</span></a>
+    </nav>
+</div>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("sidebar-overlay");
+
+window.toggleSidebar = function () {
+    const mobile = window.innerWidth <= 768;
+
+    if (mobile) {
+        sidebar.classList.toggle("hidden");
+        overlay.style.display = sidebar.classList.contains("hidden")
+            ? "none"
+            : "block";
+    } else {
+        sidebar.classList.toggle("collapsed");
+        document.body.classList.toggle("sidebar-collapsed");
+    }
+};
+
+overlay.onclick = () => toggleSidebar();
+
+/* Init */
+if (window.innerWidth <= 768) {
+    sidebar.classList.add("hidden");
+}
+</script>

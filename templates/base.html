@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aarohi Dashboard</title>
+
+    <style>
+        body{
+            margin:0;
+            background:#0f172a;
+            color:#e5e7eb;
+            font-family: Arial;
+        }
+
+        .content{
+            margin-left:240px;
+            padding:20px;
+        }
+    </style>
+</head>
+
+<body>
+
+{% include "sidebar.html" %}
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
